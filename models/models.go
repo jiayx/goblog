@@ -1,9 +1,11 @@
 package models
 
 import (
+	"time"
+
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
-	"time"
 )
 
 type Article struct {
@@ -48,6 +50,9 @@ func Init() {
 	orm.RegisterModel(new(Article), new(Category), new(User), new(CategoryArticleMap))
 	orm.RegisterDriver("mysql", orm.DR_MySQL)
 	orm.RegisterDataBase("default", "mysql", "root:root@/goblog?charset=utf8", 30)
+
+	beego.AddFuncMap("InCategoryArray", InCategoryArray)
+
 }
 
 func CreateUser(username, password string) (int64, error) {
@@ -80,4 +85,13 @@ func FindUser(i interface{}) (User, error) {
 	}
 	err := qs.One(&user)
 	return user, err
+}
+
+func InCategoryArray(val string, array []*Category) bool {
+	for _, value := range array {
+		if value.ShortName == val {
+			return true
+		}
+	}
+	return false
 }

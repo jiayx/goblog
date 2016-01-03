@@ -19,7 +19,7 @@
         {{range $.Categories}}
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="categories[]" value="{{.ShortName}}" checked="{{InArray .ShortName $.Categories}}"> {{.Name}}
+            <input type="checkbox" name="categories[]" value="{{.ShortName}}" checked="{{InCategoryArray .ShortName $.Categories}}"> {{.Name}}
           </label>
         </div>
         {{end}}

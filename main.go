@@ -1,15 +1,17 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"goblog/models"
 	_ "goblog/routers"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 func init() {
-	// 注册数据库
+	// 数据库初始化
 	models.Init()
+
 }
 
 func main() {
@@ -18,15 +20,5 @@ func main() {
 	// orm.Debug = true
 	// 自动建表
 	orm.RunSyncdb("default", false, true)
-	beego.AddFuncMap("InArray", InArray)
 	beego.Run()
-}
-
-func InArray(val string, array []*models.Category) bool {
-	for _, value := range array {
-		if value.ShortName == val {
-			return true
-		}
-	}
-	return false
 }
