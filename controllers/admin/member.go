@@ -22,6 +22,7 @@ func (this *MemberController) Post() {
 
 	if username == "jiayx" {
 		this.SetSession("username", username)
+		this.SetSession("uid", 1)
 	}
 	this.Redirect("/admin", 302)
 }

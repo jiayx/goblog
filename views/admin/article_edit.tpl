@@ -3,6 +3,7 @@
   {{with .Article}}
   <form action="/admin/article/save" method="post">
     <div class="col-md-9">
+      <input type="hidden" name="id" value="{{.Id}}">
       <div class="form-group">
         <label>标题</label>
         <input type="text" class="form-control" name="title" placeholder="标题" value="{{.Title}}">
@@ -19,7 +20,7 @@
         {{range $.Categories}}
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="categories[]" value="{{.ShortName}}" checked="{{InCategoryArray .ShortName $.Categories}}"> {{.Name}}
+            <input type="checkbox" name="categories[]" value="{{.Id}}" checked="{{InCategoryArray .Id $.Categories}}"> {{.Name}}
           </label>
         </div>
         {{end}}

@@ -12,10 +12,13 @@ type BaseController struct {
 
 func (this *BaseController) Prepare() {
 	// 检查登陆
-	/*username := this.GetSession("username")
+	this.SetSession("username", "jiayx")
+	this.SetSession("uid", 1)
+
+	username := this.GetSession("username")
 	if username == nil {
 		this.Redirect("/admin/login", 302)
-	}*/
+	}
 	// 获取header中的分类
 	categories, err := models.GetCategories()
 	if err != nil {

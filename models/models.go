@@ -8,17 +8,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Article struct {
-	Id         int64
-	Uid        int64
-	Title      string
-	Content    string `orm:"size(5000)"`
-	Views      int64  `orm:"index"`
-	Status     int8   `oem:"default(1)"` // 0删除 1正常 2草稿
-	CreateTime time.Time
-	UpdateTime time.Time
-}
-
 type Category struct {
 	Id         int64
 	Pid        int64 `orm:"default(0)"`
@@ -39,15 +28,8 @@ type User struct {
 	IsDeleted  int `orm:"default(0)"`
 }
 
-// 分类与文章对应关系
-type CategoryArticleMap struct {
-	Id        int64
-	ShortName string `orm:"index"`
-	Aid       int64  `orm:"index"`
-}
-
 func Init() {
-	orm.RegisterModel(new(Article), new(Category), new(User), new(CategoryArticleMap))
+	orm.RegisterModel(new(Article), new(Category), new(User), new(CategoryArticles))
 	orm.RegisterDriver("mysql", orm.DR_MySQL)
 	orm.RegisterDataBase("default", "mysql", "root:root@/goblog?charset=utf8", 30)
 
@@ -87,9 +69,9 @@ func FindUser(i interface{}) (User, error) {
 	return user, err
 }
 
-func InCategoryArray(val string, array []*Category) bool {
+func InCategoryArray(val int64, array []*Category) bool {
 	for _, value := range array {
-		if value.ShortName == val {
+		if value.Id == val {
 			return true
 		}
 	}
