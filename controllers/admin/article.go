@@ -23,56 +23,49 @@ func (this *ArticleController) Write() {
 func (this *ArticleController) Save() {
 
 	var (
-		err              error
-		article          models.Article
-		categoryArticles models.CategoryArticles
+		err     error
+		article models.Article
+		// categoryArticles models.CategoryArticles
 	)
 
 	id, _ := this.GetInt64("id", 0)
 	uid := this.GetSession("uid")
-	article.Uid = int64(uid.(int))
+	article.User.Id = int64(uid.(int))
 	article.Title = strings.TrimSpace(this.GetString("title", "未命名"))
 	article.Content = strings.TrimSpace(this.GetString("content"))
 	article.Views = 0
 	article.Status, err = this.GetInt8("status", 1)
-	article.CreateTime = time.Now()
 	article.UpdateTime = time.Now()
-
+	fmt.Println(article.UpdateTime)
 	categories := this.GetStrings("categories[]")
 
 	if article.Content == "" {
-		// 显示错误 、 返回json
-		this.ShowMsg("内容不能为空", "/admin/article/write")
+		this.ShowMsg("内容不能为空", this.ArticleSaveRedirectUrl(id))
 	}
 
 	cateLen := len(categories)
-	mapping := make([]models.CategoryArticles, 0)
+	mapping := make([]*models.Category, 0)
+
+	if cateLen > 0 {
+		for _, c := range categories {
+			var ca models.Category
+			ca.Id = helpers.Str2Int(c)
+			mapping = append(mapping, &ca)
+		}
+	}
+	article.Categories = mapping
 
 	if id > 0 {
 		article.Id = id
-		_, err = article.Update()
+		err = article.Update("Title", "Content", "UpdateTime")
 
 	} else {
+		article.CreateTime = time.Now()
 		id, err = article.Insert()
 	}
-
+	fmt.Println(err, "sdsggrerrr")
 	if err != nil {
-		this.ShowMsg("出错了请重试", "/admin/article/write")
-	}
-
-	if cateLen > 0 {
-		var ca models.CategoryArticles
-		for _, c := range categories {
-			ca.Aid = id
-			ca.Cid = helpers.Str2Int(c)
-			mapping = append(mapping, ca)
-		}
-	}
-
-	categoryArticles.UpdateMapping(id, &mapping)
-	fmt.Println(mapping)
-	if err != nil {
-		this.ShowMsg("出错了请重试", "/admin/article/write")
+		this.ShowMsg(err.Error(), this.ArticleSaveRedirectUrl(id))
 	}
 
 	this.Redirect("/admin/manage/post", 302)
@@ -81,7 +74,7 @@ func (this *ArticleController) Save() {
 // 列表
 func (this *ArticleController) List() {
 	var article models.Article
-	list, err := article.GetArticles()
+	list, err := article.All()
 	if err != nil {
 		this.ShowMsg("出错了", "/admin/manage/post")
 	}
@@ -98,11 +91,29 @@ func (this *ArticleController) Edit() {
 		this.Abort("404")
 	}
 	var article models.Article
-	post, err := article.GetArticleById(id)
+	article, err := article.One(id, false)
 	if err != nil {
 		this.ShowMsg("出错了", "/admin/manage/post")
 	}
+	// fmt.Println(article.Categories)
 	this.Data["Title"] = "编辑文章"
-	this.Data["Article"] = post
+	this.Data["Article"] = article
+	this.Data["Cates"] = article.Categories
 	this.Display("article_edit.tpl")
+}
+
+// 删除
+func (this *ArticleController) Delete() {
+
+	id := this.Ctx.Input.Param(":id")
+	if id == "" {
+		this.Abort("404")
+	}
+	idInt := helpers.Str2Int(id)
+	article := models.Article{Id: idInt}
+	err := article.Delete()
+	if err != nil {
+		this.ShowMsg("出错了", "/admin/manage/post")
+	}
+	this.Redirect("/admin/manage/post", 302)
 }

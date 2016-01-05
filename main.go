@@ -1,18 +1,12 @@
 package main
 
 import (
-	"goblog/models"
+	_ "goblog/models"
 	_ "goblog/routers"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
-
-func init() {
-	// 数据库初始化
-	models.Init()
-
-}
 
 func main() {
 	// beego.EnableAdmin = true

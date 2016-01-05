@@ -1,13 +1,17 @@
 package admin
 
 import (
-	"github.com/astaxie/beego"
 	"goblog/models"
+
+	"fmt"
+
+	"github.com/astaxie/beego"
 )
 
 type BaseController struct {
 	beego.Controller
-	Theme string
+	Theme  string
+	Option map[string]string
 }
 
 func (this *BaseController) Prepare() {
@@ -26,7 +30,13 @@ func (this *BaseController) Prepare() {
 	}
 	this.Data["Categories"] = categories
 
-	//
+	// 配置项
+	var option models.Option
+	this.Option, _ = option.All()
+
+	/*if _, ok := this.Option["theme"]; !ok {
+		this.Option["theme"] = "default" // 博客前端默认主题
+	}*/
 	this.Theme = "admin"
 }
 
@@ -41,4 +51,28 @@ func (this *BaseController) ShowMsg(msg, redirect string) {
 	this.TplNames = this.Theme + "/show_msg.tpl"
 	this.Render()
 	this.StopRun()
+}
+
+func (this *BaseController) ArticleSaveRedirectUrl(id interface{}) string {
+	url := "/admin/article/write"
+	if id.(int64) > 0 {
+		url = fmt.Sprintf("/admin/article/edit/%d", id.(int64))
+	}
+	return url
+}
+
+func (this *BaseController) SaySaveRedirectUrl(id interface{}) string {
+	url := "/admin/say/write"
+	if id.(int64) > 0 {
+		url = fmt.Sprintf("/admin/say/edit/%d", id.(int64))
+	}
+	return url
+}
+
+func (this *BaseController) CategorySaveRedirectUrl(id interface{}) string {
+	url := "/admin/category/write"
+	if id.(int64) > 0 {
+		url = fmt.Sprintf("/admin/category/edit/%d", id.(int64))
+	}
+	return url
 }

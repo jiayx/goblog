@@ -36,7 +36,7 @@
           <li class="dropdown">
             <a data-hover="dropdown" data-delay="200">撰写 <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="admin/say/write">写说说</a></li>
+              <li><a href="/admin/say/write">写说说</a></li>
               <li><a href="/admin/article/write">写文章</a></li>
             </ul>
           </li>
@@ -46,7 +46,7 @@
               <li><a href="/admin/manage/say">说说</a></li>
               <li><a href="/admin/manage/post">文章</a></li>
               <li><a href="/admin/manage/post">评论</a></li>
-              <li><a href="/admin/manage/post">分类</a></li>
+              <li><a href="/admin/manage/category">分类</a></li>
               <li><a href="/admin/manage/post">标签</a></li>
               <li><a href="/admin/manage/post">文件</a></li>
               <li><a href="/admin/manage/post">用户</a></li>
@@ -66,7 +66,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Jiayx</a></li>
           <li><a href="/admin/logout">退出</a></li>
-          <li><a href="/">网站</a></li>
+          <li><a href="/" target="_blank">网站</a></li>
         </ul>
       </div>
     </div>
