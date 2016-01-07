@@ -1,11 +1,15 @@
 package routers
 
 import (
-	"github.com/astaxie/beego"
+	"goblog/controllers"
 	"goblog/controllers/admin"
+
+	"github.com/astaxie/beego"
 )
 
 func init() {
+	// 前端留言板
+	beego.Router("/", &controllers.IndexController{})
 
 	// 后台管理
 	beego.Router("/admin", &admin.IndexController{})
