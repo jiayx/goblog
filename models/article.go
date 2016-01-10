@@ -30,7 +30,9 @@ func (m *Article) Insert() (int64, error) {
 	o := orm.NewOrm()
 	id, err := o.Insert(m)
 	m.Id = id
-	o.QueryM2M(m, "Categories").Add(m.Categories)
+	if len(m.Categories) > 0 {
+		o.QueryM2M(m, "Categories").Add(m.Categories)
+	}
 	return id, err
 }
 
@@ -40,7 +42,9 @@ func (m *Article) Update(fields ...string) error {
 	if err == nil {
 		_, err = o.Update(m, fields...)
 		o.QueryM2M(m, "Categories").Clear()
-		o.QueryM2M(m, "Categories").Add(m.Categories)
+		if len(m.Categories) > 0 {
+			o.QueryM2M(m, "Categories").Add(m.Categories)
+		}
 	}
 	return err
 }

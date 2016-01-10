@@ -28,11 +28,18 @@
         <label>所属分类</label>
         
         {{range $.Categories}}
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="categories[]" value="{{.Id}}"{{if InCategoryArray .Id $.Cates}} checked{{end}}> {{.Name}}
-          </label>
-        </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="categories[]" value="{{.Id}}"{{if InCategoryArray .Id $.Cates}} checked{{end}}> {{.Name}}
+            </label>
+          </div>
+          {{range .SubCategories}}
+          <div class="checkbox">
+            --<label>
+              <input type="checkbox" name="categories[]" value="{{.Id}}"{{if InCategoryArray .Id $.Cates}} checked{{end}}> {{.Name}}
+            </label>
+          </div>
+          {{end}}
         {{end}}
       </div>
 

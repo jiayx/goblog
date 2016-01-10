@@ -3,6 +3,7 @@ package models
 import (
 	"goblog/helpers"
 
+	// "fmt"
 	"time"
 
 	"github.com/astaxie/beego/orm"
@@ -17,15 +18,12 @@ type Category struct {
 	Sort       int64 `orm:"default(0)"`
 	CreateTime time.Time
 	UpdateTime time.Time
-	Article    []*Article `orm:"rel(m2m)"`
+	Articles   []*Article `orm:"rel(m2m)"`
 }
 
-// 获取全部分类
-func GetCategories() ([]*Category, error) {
-	categories := make([]*Category, 0)
-	o := orm.NewOrm()
-	_, err := o.QueryTable("Category").OrderBy("Sort").All(&categories)
-	return categories, err
+type CategoryRelation struct {
+	*Category
+	SubCategories []*CategoryRelation
 }
 
 // 获取分类名称
@@ -57,12 +55,27 @@ func (m *Category) Delete() error {
 	return err
 }
 
-// 获取全部分类
-func (m *Category) All() ([]*Category, error) {
+// 获取全部分类 - 详情
+func (m *Category) AllDetail() ([]*CategoryRelation, error) {
 	categories := make([]*Category, 0)
 	o := orm.NewOrm()
 	_, err := o.QueryTable("Category").OrderBy("Sort").All(&categories)
-	return categories, err
+	for _, cate := range categories {
+		o.LoadRelated(cate, "Articles")
+	}
+	_categories := BuildCategory(categories, 0)
+	// fmt.Println(_categories)
+	return _categories, err
+}
+
+// 获取全部分类 - 仅获取分类
+func (m *Category) All() ([]*CategoryRelation, error) {
+	categories := make([]*Category, 0)
+	o := orm.NewOrm()
+	_, err := o.QueryTable("Category").OrderBy("Sort").All(&categories)
+	_categories := BuildCategory(categories, 0)
+	// fmt.Println(_categories)
+	return _categories, err
 }
 
 func (m *Category) One(id string) (Category, error) {
@@ -72,4 +85,18 @@ func (m *Category) One(id string) (Category, error) {
 	qs := o.QueryTable("say").Filter("id", idInt)
 	err := qs.One(&category)
 	return category, err
+}
+
+func BuildCategory(categories []*Category, pid int64) []*CategoryRelation {
+	_category := make([]*CategoryRelation, 0)
+	for _, cate := range categories {
+		if cate.Pid == pid {
+			cateRel := new(CategoryRelation)
+			// fmt.Println(cate)
+			cateRel.Category = cate
+			cateRel.SubCategories = BuildCategory(categories, cate.Id)
+			_category = append(_category, cateRel)
+		}
+	}
+	return _category
 }

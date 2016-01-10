@@ -20,6 +20,13 @@
             <input type="checkbox" name="categories[]" value="{{.Id}}"> {{.Name}}
           </label>
         </div>
+          {{range .SubCategories}}
+          <div class="checkbox">
+            --<label>
+              <input type="checkbox" name="categories[]" value="{{.Id}}"> {{.Name}}
+            </label>
+          </div>
+          {{end}}
         {{end}}
       </div>
 

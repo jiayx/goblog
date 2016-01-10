@@ -24,7 +24,7 @@ func (this *BaseController) Prepare() {
 		this.Redirect("/admin/login", 302)
 	}
 	// 获取header中的分类
-	categories, err := models.GetCategories()
+	categories, err := new(models.Category).All()
 	if err != nil {
 		this.Abort("500")
 	}

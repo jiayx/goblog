@@ -30,7 +30,11 @@ func (this *ArticleController) Save() {
 
 	id, _ := this.GetInt64("id", 0)
 	uid := this.GetSession("uid")
-	article.User.Id = int64(uid.(int))
+	fmt.Println(article)
+
+	var user models.User
+	user.Id = int64(uid.(int))
+	article.User = &user
 	article.Title = strings.TrimSpace(this.GetString("title", "未命名"))
 	article.Content = strings.TrimSpace(this.GetString("content"))
 	article.Views = 0
@@ -45,7 +49,6 @@ func (this *ArticleController) Save() {
 
 	cateLen := len(categories)
 	mapping := make([]*models.Category, 0)
-
 	if cateLen > 0 {
 		for _, c := range categories {
 			var ca models.Category

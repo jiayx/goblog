@@ -57,11 +57,11 @@ func (this *CategoryController) Save() {
 
 // 列表
 func (this *CategoryController) List() {
-	var category models.Category
-	list, err := category.All()
+	list, err := new(models.Category).AllDetail()
 	if err != nil {
 		this.ShowMsg("出错了", "/admin/manage/category")
 	}
+
 	this.Data["Title"] = "分类管理"
 	this.Data["List"] = list
 	this.Display("category_list.tpl")

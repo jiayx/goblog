@@ -19,7 +19,7 @@
       <tr>
         <th scope="row"><input type="checkbox" value="{{.Id}}"></th>
         <td><a href="/admin/article/edit/{{.Id}}">{{.Title}}</a></td>
-        <td>{{.Uid}}</td>
+        <td>{{.User.Id}}</td>
         <td>
           {{range $index, $elem := .Categories}}
             {{if eq $index  0}}
@@ -30,7 +30,7 @@
           {{end}}
         </td>
         <td>{{.Views}}</td>
-        <td>{{.Uid}}</td>
+        <td>{{.User.Id}}</td>
         <td>{{date .CreateTime "Y-m-d H:i"}}</td>
         <td>{{date .UpdateTime "Y-m-d H:i:s"}}</td>
         <td><a href="/admin/article/delete/{{.Id}}">删除</a></td>
