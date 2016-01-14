@@ -100,3 +100,9 @@ func BuildCategory(categories []*Category, pid int64) []*CategoryRelation {
 	}
 	return _category
 }
+
+// 总数
+func (m *Category) Count() int64 {
+	count, _ := orm.NewOrm().QueryTable("category").Count()
+	return count
+}

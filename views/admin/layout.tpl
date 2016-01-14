@@ -49,7 +49,6 @@
               <li><a href="/admin/manage/category">分类</a></li>
               <li><a href="/admin/manage/post">标签</a></li>
               <li><a href="/admin/manage/post">文件</a></li>
-              <li><a href="/admin/manage/post">用户</a></li>
               <li><a href="/admin/manage/post">友链</a></li>
             </ul>
           </li>

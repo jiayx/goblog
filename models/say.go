@@ -85,3 +85,9 @@ func (m *Say) ViewAdd(args ...int64) {
 	o := orm.NewOrm()
 	o.Update(m, "Views")
 }
+
+// 总数
+func (m *Say) Count() int64 {
+	count, _ := orm.NewOrm().QueryTable("say").Count()
+	return count
+}

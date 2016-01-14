@@ -33,7 +33,7 @@
         <td>{{.User.Id}}</td>
         <td>{{date .CreateTime "Y-m-d H:i"}}</td>
         <td>{{date .UpdateTime "Y-m-d H:i:s"}}</td>
-        <td><a href="/admin/article/delete/{{.Id}}">删除</a></td>
+        <td><a href="/admin/article/delete/{{.Id}}" onclick="return confirm('是否确认删除？')">删除</a></td>
       </tr>
       {{end}}
     </tbody>

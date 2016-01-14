@@ -77,7 +77,7 @@ func (this *ArticleController) Save() {
 // 列表
 func (this *ArticleController) List() {
 	var article models.Article
-	list, err := article.All()
+	list, err := article.All(map[string]string{})
 	if err != nil {
 		this.ShowMsg("出错了", "/admin/manage/post")
 	}

@@ -9,6 +9,8 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+const PAGE_SIZE = 20
+
 type Article struct {
 	Id         int64
 	Title      string
@@ -65,31 +67,44 @@ func (m *Article) Delete() error {
 }
 
 // 1分类 2 排序方式
-func (m *Article) All(args ...string) ([]*Article, error) {
-
-	cate := ""
-	orderBy := "-CreateTime"
-	if len(args) == 2 {
-		cate = args[0]
-		orderBy = args[1]
-	} else if len(args) == 1 {
-		cate = args[0]
-	}
+func (m *Article) All(queries map[string]string) ([]*Article, error) {
 
 	articles := make([]*Article, 0)
 
 	o := orm.NewOrm()
 	qs := o.QueryTable("article")
-	if cate != "" {
-		qs = qs.Filter("category", cate)
+
+	// 类型筛选
+	if category, ok := queries["category"]; ok {
+		qs = qs.Filter("category", category)
+	}
+	// 排序方式
+	if orderBy, ok := queries["orderBy"]; ok {
+		qs = qs.OrderBy(orderBy)
+	} else {
+		qs = qs.OrderBy("-CreateTime")
+	}
+	// 分页
+	if pageIndex, ok := queries["pageIndex"]; ok {
+		pageIndexInt := helpers.Str2Int(pageIndex)
+		if pageIndexInt < 1 {
+			pageIndexInt = 1
+		}
+		qs = qs.Offset((pageIndexInt - 1) * PAGE_SIZE)
+	} else {
+		qs = qs.OrderBy("-CreateTime")
+	}
+	if pageSize, ok := queries["pageSize"]; ok {
+		pageSizeInt := helpers.Str2Int(pageSize)
+		qs = qs.Limit(pageSizeInt)
+	} else {
+		qs = qs.Limit(PAGE_SIZE)
 	}
 
-	qs = qs.OrderBy(orderBy)
 	_, err := qs.All(&articles)
 
 	for _, a := range articles {
 		o.LoadRelated(a, "Categories")
-
 	}
 	return articles, err
 }
@@ -116,4 +131,10 @@ func (m *Article) ViewAdd(args ...int64) {
 	m.Views = m.Views + count
 	o := orm.NewOrm()
 	o.Update(m, "Views")
+}
+
+// 总数
+func (m *Article) Count() int64 {
+	count, _ := orm.NewOrm().QueryTable("article").Count()
+	return count
 }
