@@ -16,6 +16,11 @@ type ArticleController struct {
 // 新增
 func (this *ArticleController) Write() {
 	this.Data["Title"] = "写文章"
+
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["MdStyles"] = "admin/md_css.tpl"
+	this.LayoutSections["MdScripts"] = "admin/md_js.tpl"
+
 	this.Display("article_add.tpl")
 }
 
@@ -102,6 +107,11 @@ func (this *ArticleController) Edit() {
 	this.Data["Title"] = "编辑文章"
 	this.Data["Article"] = article
 	this.Data["Cates"] = article.Categories
+
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["MdStyles"] = "admin/md_css.tpl"
+	this.LayoutSections["MdScripts"] = "admin/md_js.tpl"
+
 	this.Display("article_edit.tpl")
 }
 

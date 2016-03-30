@@ -10,6 +10,7 @@ import (
 func init() {
 	// 前端留言板
 	beego.Router("/", &controllers.IndexController{})
+	beego.Router("/index", &controllers.IndexController{}, "get:Index")
 
 	// 后台管理
 	beego.Router("/admin", &admin.IndexController{})

@@ -8,6 +8,7 @@
   <meta name="author" content="">
   <title>{{.Title}}</title>
   <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  {{.MdStyles}}
   <style type="text/css">
   body { padding-top: 60px; }
   .bg-purple{
@@ -76,5 +77,6 @@
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="/static/js/dropdownHover.js"></script>
+{{.MdScripts}}
 </body>
 </html>

@@ -7,7 +7,9 @@
       </div>
       <div class="form-group">
         <label>内容</label>
-        <textarea class="form-control" name="content" id="" cols="30" rows="18" placeholder="内容" required></textarea>
+        <div id="editormd">
+          <textarea style="display:none;"></textarea>
+        </div>
       </div>
       <button type="submit" class="btn btn-default">提交</button>
     </div>

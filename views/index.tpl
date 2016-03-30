@@ -55,7 +55,7 @@
 <script src="http://cdn.amazeui.org/amazeui/2.5.0/js/amazeui.min.js"></script>
 <script src="http://cdn.bootcss.com/socket.io/1.3.7/socket.io.js"></script>
 <script>
-  var socket = io("http://10.12.15.84:5000");
+  var socket = io("http://10.12.15.107:5000");
   var id = 1;
   socket.emit('join', {
     name: $("#name").val(),
