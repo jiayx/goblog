@@ -9,7 +9,7 @@ type MemberController struct {
 }
 
 func (this *MemberController) Get() {
-	this.TplNames = "admin/login.tpl"
+	this.TplName = "admin/login.tpl"
 }
 
 func (this *MemberController) Post() {

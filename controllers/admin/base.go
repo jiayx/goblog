@@ -42,13 +42,13 @@ func (this *BaseController) Prepare() {
 
 func (this *BaseController) Display(path string) {
 	this.Layout = this.Theme + "/layout.tpl"
-	this.TplNames = this.Theme + "/" + path
+	this.TplName = this.Theme + "/" + path
 }
 
 func (this *BaseController) ShowMsg(msg, redirect string) {
 	this.Data["msg"] = msg
 	this.Data["redirect"] = redirect
-	this.TplNames = this.Theme + "/show_msg.tpl"
+	this.TplName = this.Theme + "/show_msg.tpl"
 	this.Render()
 	this.StopRun()
 }
