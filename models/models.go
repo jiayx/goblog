@@ -34,7 +34,7 @@ func init() {
 	// 初始化数据库
 	orm.RegisterModel(new(Article), new(Category), new(User), new(Say), new(Option), new(Comment))
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:root@/goblog?charset=utf8&loc=Asia%2FShanghai", 30)
+	orm.RegisterDataBase("default", "mysql", "root:@/goblog?charset=utf8&loc=Asia%2FShanghai", 30)
 
 	// 注册模板函数
 	beego.AddFuncMap("InCategoryArray", InCategoryArray)
